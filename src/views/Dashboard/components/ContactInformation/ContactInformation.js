@@ -10,7 +10,7 @@ import {withStyles} from '@material-ui/core/styles';
 
 const useStyles = theme => ({
   root: {
-    height: '100%'
+    height: '30vh'
   },
   content: {
     alignItems: 'center',

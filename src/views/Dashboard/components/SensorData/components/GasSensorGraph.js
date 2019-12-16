@@ -13,6 +13,8 @@ import {
 
 require('highcharts/highcharts-more')(Highcharts);
 
+const windowHeight = window.innerHeight;
+const calHeight = windowHeight;
 
 
 const config = {
@@ -111,10 +113,10 @@ const config = {
 
 const useStyles = makeStyles(() => ({
     root: {
-        height: '100%'
+      height: '65vh'
     },
     GaugeContainer: {
-      height: 'relative',
+      height: "100%",
       width: 'relative',
       position: 'relative'
     },

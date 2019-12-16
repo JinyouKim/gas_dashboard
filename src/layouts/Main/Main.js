@@ -6,10 +6,10 @@ import { useMediaQuery } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    paddingTop: 56,
-    height: '100vh',
+    paddingTop: 0,
+    height: '100%',
     [theme.breakpoints.up('sm')]: {
-      paddingTop: 4
+      paddingTop: 0
     }
   },
   shiftContent: {
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Main = props => {
-  const { children } = props;
+  const { children } = props;  
 
   const classes = useStyles();
   const theme = useTheme();

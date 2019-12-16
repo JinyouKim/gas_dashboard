@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {Component} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
+import { withStyles } from '@material-ui/styles';
 import VworldMap from './VworldMap';
 import {
   Card,
@@ -10,29 +10,27 @@ import {
   Divider,
 } from '@material-ui/core';
 
-const useStyles = makeStyles(() => ({
+const useStyles = theme => ({
   root: {
-    height: 800
+    height: '65vh'
   },
   mapContainer: {
-    height: '100%',
+    height: '100vh',
     position: 'relative'
   },
   actions: {
     justifyContent: 'flex-end'
   }
-}));
+});
 
-const GasMap = props => {
-  const { className, ...rest } = props;
-
-  const classes = useStyles();
-
-  return (
-    <Card
+class GasMap extends Component {
+  render() {
+    const {className, classes, ...rest}  = this.props;
+    return (
+      <Card
       {...rest}
       className={clsx(classes.root, className)}
-    >
+      >
       <CardHeader        
         title="흥해지구"
       />
@@ -42,12 +40,11 @@ const GasMap = props => {
             <VworldMap></VworldMap>
         </div>
       </CardContent>      
-    </Card>
-  );
-};
+      </Card>
 
-GasMap.propTypes = {
-  className: PropTypes.string
-};
+    );
+  }
 
-export default GasMap;
+}
+
+export default withStyles(useStyles)(GasMap);

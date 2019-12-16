@@ -22,6 +22,7 @@ import {
 
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
+import { callbackify } from 'util';
 
 const testData = [
     {
@@ -49,12 +50,17 @@ const statusColors = {
     urgent: 'danger'        
 };
 const useStyles = makeStyles(theme => ({
-    root: {},
+    root: {
+      height: '30vh'
+    },
     content: {
       padding: 0
     },
+    tableHeader: {
+    },
     inner: {
-      minWidth: 800
+      minWidth: 800,
+      maxHeight: '20vh'
     },
     statusContainer: {
       display: 'flex',
@@ -64,6 +70,7 @@ const useStyles = makeStyles(theme => ({
       marginRight: theme.spacing(1)
     },
     actions: {
+      height: '20%',
       justifyContent: 'flex-end'
     }
   }));
@@ -88,8 +95,8 @@ const LogTable = props => {
             <CardContent className = {classes.content}>
                 <PerfectScrollbar>
                     <div className = {classes.inner}>
-                        <Table>
-                            <TableHead>
+                        <Table stickyHeader>
+                            <TableHead className = {classes.tableHeader}>
                                 <TableRow>
                                     <TableCell>Sensor ID</TableCell>
                                     <TableCell>Date</TableCell>                         
