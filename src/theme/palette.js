@@ -44,14 +44,14 @@ export default {
         light: colors.red[400]
     },
     text: {
-        primary: colors.blueGrey[900],
-        secondary: colors.blueGrey[600],
+        primary: colors.blueGrey[100],
+        secondary: "#2E6FFD",
         link: colors.blue[600]
     },
     background: {
         default: '#F4F6F8',
-        paper: white
+        paper: '#2A2F3D'
     },
     icon: colors.blueGrey[600],
-    divider: colors.grey[200]
+    divider: '#171924'
 };

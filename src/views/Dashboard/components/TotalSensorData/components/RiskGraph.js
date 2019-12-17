@@ -44,26 +44,41 @@ class RiskGraph extends Component {
                 chart: {
                     type: 'spline',
                     animation: Highcharts.svg,
-                    marginRight:10
+                    marginRight:10,
+                    backgroundColor: '#2A2F3D',
                 },
                 title: {
                     text: null
                 },
                 xAxis: {
                     type: 'category',
-                    tickPixelInterval: 150
+                    tickPixelInterval: 150,
+                    labels: {
+                        style: {
+                            color:'#FFFFFF'
+                        }
+                    }
                 },
                 yAxis: {
                     max: 100,
+                    min: 0,
                     title: {
-                        text: 'risk ratio (%)'
+                        text: 'risk ratio (%)',
+                        style: {
+                            color:'#FFFFFF'
+                        }
                     },
                     plotLines: [{
                         value: 0,
                         width: 1,
                         color: '#808080'
 
-                    }]
+                    }],
+                    labels: {
+                        style: {
+                            color:'#FFFFFF'
+                        }
+                    }
                 },
                 tooltip: {
                     headerFormat: '<b>{series.name}: {point.y}%</b><br/>',
@@ -74,7 +89,8 @@ class RiskGraph extends Component {
                 },
                 series: [{
                     name: '위험도',
-                    data: []
+                    data: [],
+                    color: '#2E6FFD'
 
                 }],                
                 credits: {
@@ -112,7 +128,7 @@ class RiskGraph extends Component {
           className={clsx(classes.root, className)}
         >
           <CardHeader        
-            title="위험도 분석 정보"
+            title="센서 분석 정보"
           />
           <Divider />
           <CardContent className={clsx(classes.cardContent, className)}>

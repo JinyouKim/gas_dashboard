@@ -6,6 +6,8 @@ import Paper from '@material-ui/core/Paper'
 
 import {
     GasSensorGauge,
+    GasSensorGraph,
+    SensorInfoTable
 } from './components'
 
 const useStyles = makeStyles(theme => ({
@@ -27,10 +29,10 @@ const SensorData = () => {
                     <GasSensorGauge/>
                 </Grid>
                 <Grid item xs={6}>
-                    <GasSensorGauge/>
+                    <SensorInfoTable/>
                 </Grid>
                 <Grid item xs = {12}>
-                    <GasSensorGauge/>
+                    <GasSensorGraph/>
                 </Grid>
             </Grid>
         </div>

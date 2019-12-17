@@ -194,6 +194,7 @@ class VworldMap extends Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log(state);
     return {
         pipeData: state.pipeData,
         sensorInfo: state.sensorInfo

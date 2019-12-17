@@ -24,7 +24,7 @@ const Dashboard = (props) => {
     const classes = useStyles();
     let changingComponent;
     
-    if (props.clickedFeature.value) {
+    if (props.clickedFeature) {
         changingComponent = <SensorData/>
     }
     else {
@@ -53,7 +53,7 @@ const Dashboard = (props) => {
 const mapStateToProps = (state) => {
     console.log(state);
     return {
-        clickedFeature: state.clickedFeature,
+        clickedFeature: state.clickedFeature.feature,
     };
 }
 export default connect(mapStateToProps)(Dashboard)

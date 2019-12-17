@@ -3,14 +3,14 @@ import SensorDataReducer from './SensorDataReducer.js'
 import PipeDataReducer from './PipeDataReducer.js'
 import SensorInfoReducer from './SensorInfoReducer.js'
 import TotalSensorDataReducer from './TotalSensorDataReducer.js'
-import DashboardReducer from './DashboardReducer.js';
+import VworldMapReducer from './VworldMapReducer';
 
 const rootReducer = combineReducers({
+    clickedFeature: VworldMapReducer,
     sensorData: SensorDataReducer,
     pipeData: PipeDataReducer,
     sensorInfo: SensorInfoReducer,
-    totalSensorData: TotalSensorDataReducer,
-    clickedFeature: DashboardReducer
+    totalSensorData: TotalSensorDataReducer
 });
 
 export default rootReducer;

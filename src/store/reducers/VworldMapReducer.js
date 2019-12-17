@@ -5,14 +5,13 @@ export default function (state =[], action) {
         case RECV_CLICKEVT:
             return {
                 ...state,
-                value: action.value
+                feature: action.value
             };
         case RECV_BACKWARDEVT:
             return {
                 ...state,
-                value: action.value
-            };
-        
+                feature: action.value
+        };
         default:
             return state;
     }

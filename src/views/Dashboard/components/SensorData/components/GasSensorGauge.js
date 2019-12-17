@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/styles';
 import axios from 'axios';
+import {receiveSensorData} from "../../../../../store/actions"
 import {connect} from 'react-redux'
 import './GasSensorGauge.css';
 import {
@@ -40,6 +41,7 @@ class GasSensorGauge extends Component {
       sensorDataConfig: {
         chart: {
             type: 'solidgauge',
+            backgroundColor: '#2A2F3D'            
         },
         title: null,
         credits: {
@@ -77,10 +79,13 @@ class GasSensorGauge extends Component {
           minorTickInterval: null,
           tickAmount: 2,
           title: {
-            y:-70,
-            text: 'Sensor Data'
+            y:-30,
           },
           labels: {
+            style: {
+              color:'#FFFFFF'
+            },
+              
             y: 16
           }
         },
@@ -90,8 +95,8 @@ class GasSensorGauge extends Component {
           dataLabels: {
             format:
             '<div style="text-align:center">' +
-            '<span style="font-size:30px">{y}</span> ' +
-            '<span style="font-size:18px;opacity:0.4">%</span>'+
+            '<span style="font-size:42px;color:#ffffff">{y}</span> ' +
+            '<span style="font-size:24px;color:#ffffff;opacity:0.4">%</span>'+
             '</div>'
           },
           tooltip: {
@@ -102,7 +107,7 @@ class GasSensorGauge extends Component {
         plotOptions: {
           solidgauge: {
             dataLabels: {
-              y: -40,
+              y: -45,
               borderWidth: 0,
               useHTML: true
             }
@@ -118,11 +123,10 @@ class GasSensorGauge extends Component {
       const sensorId = this.props.feature.values_.sensor_id;
       console.log(sensorId);
       axios.post('http://141.223.108.164:8080/sensor_value', {sensor_id: sensorId}).then(response =>{
-        console.log(response.data[0].sensor_id);
-          
-        let series = chart.series[0];        
+        this.props.onReceiveSensorData(response.data[0]);
+        let series = chart.series[0];
         series.setData([Number(response.data[0].value)]);
-        this.setState({timeout:setTimeout(getSensorData, 1000*1)});
+        this.setState({timeout:setTimeout(getSensorData, 1000*3)});
       });
   }
   getSensorData();
@@ -138,7 +142,7 @@ class GasSensorGauge extends Component {
         className={clsx(classes.root, className)}
       >
         <CardHeader        
-          title="센서 데이터"
+          title="센서데이터"
         />
         <Divider />
         <CardContent>
@@ -152,16 +156,23 @@ class GasSensorGauge extends Component {
 
 }
 
-
   GasSensorGauge.propTypes = {
     className: PropTypes.string
-  };
-  
+  };  
 
-  const mapStateToProps = (state) => {
-    return {
-      feature: state.sensorData.feature,
-      sensorData: state.sensorData.data
-    };
+const mapStateToProps = (state) => {
+  console.log(state.clickedFeature)
+  return {
+    feature: state.clickedFeature.feature
+  }
+
 }
-export default connect(mapStateToProps)(withStyles(useStyles)(GasSensorGauge));
+const mapDispatchToProps = (dispatch) => {
+  return {
+      onReceiveSensorData: (value) => {
+          dispatch(receiveSensorData(value))
+      }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(GasSensorGauge));

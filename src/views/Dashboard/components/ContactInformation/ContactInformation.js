@@ -78,9 +78,9 @@ class ContactInformation extends Component {
             >
               {this.state.name}
             </Typography>
-            <Typography variant="body1">부서: {this.state.departure}</Typography>
-            <Typography variant="body1">연락처: {this.state.number}</Typography>
-            <Typography variant="body1">이메일: {this.state.email}</Typography>
+            <Typography variant="h5">부서: {this.state.departure}</Typography>
+            <Typography variant="h5">연락처: {this.state.number}</Typography>
+            <Typography variant="h5">이메일: {this.state.email}</Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>

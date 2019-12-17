@@ -3,7 +3,7 @@ export const RECV_PIPEDATA = "RECV_PIPEDATA";
 export const RECV_SENSORINFO = "RECV_SENSORINFO";
 export const RECV_CLICKEVT = "RECV_CLICKEVT";
 export const RECV_TOTALSENSORDATA = "RECV_TOTALSENSORDATA";
-export const RECV_BACKWARDEVENT = "RECV_BACKWARDEVENT";
+export const RECV_BACKWARDEVT = "RECV_BACKWARDEVENT";
 
 
 export function receiveSensorData(value) {
@@ -42,7 +42,7 @@ export function receiveClickEvent(value) {
 }
 export function receiveBackwardEvent() {
     return {
-        type: RECV_BACKWARDEVENT,
+        type: RECV_BACKWARDEVT,
     }
 }
 

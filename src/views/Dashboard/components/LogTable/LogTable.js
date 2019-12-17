@@ -57,6 +57,7 @@ const useStyles = makeStyles(theme => ({
       padding: 0
     },
     tableHeader: {
+        backgroundColor: '#171924'
     },
     inner: {
       minWidth: 800,
@@ -95,7 +96,7 @@ const LogTable = props => {
             <CardContent className = {classes.content}>
                 <PerfectScrollbar>
                     <div className = {classes.inner}>
-                        <Table stickyHeader>
+                        <Table stickyHeader = {classes.stickyHeader}>
                             <TableHead className = {classes.tableHeader}>
                                 <TableRow>
                                     <TableCell>Sensor ID</TableCell>
