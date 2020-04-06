@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, Component} from 'react';
 import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
-import {makeStyles} from '@material-ui/styles';
+import { withStyles } from '@material-ui/styles';
 import uuid from 'uuid/v1'
 import { StatusBullet } from '../../../../components';
 import moment from 'moment';
+import { connect } from 'react-redux';
+import marker from 'image/marker.png'
 
 import {
     Card,
@@ -19,10 +21,13 @@ import {
     TableHead,
     TableRow,
     Button,
+    TablePagination,
+    TableContainer
 
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 import { callbackify } from 'util';
+import { separateMessageFromStack } from 'jest-message-util';
 
 const testData = [
     {
@@ -45,18 +50,32 @@ const testData = [
   }
 ]
 const statusColors = {
-    normal: 'success',
-    warning: 'info',
-    urgent: 'danger'        
+    0: 'success',
+    1: 'primary',
+    2: 'warning',
+    3: 'danger',
+    4: 'info'      
 };
-const useStyles = makeStyles(theme => ({
+
+const useStyles = theme => ({    
     root: {
-      height: '30vh'
+      height: '100%'
     },
     content: {
-      padding: 0
+      padding: 0,
+      height: '27.09vh'
     },
-    tableHeader: {
+    container: {
+        height: '90%'        
+    },
+    table: {
+        height: '100%'
+    },
+    pagination:{
+      height: '100%'  
+    },
+    stickyHeader: {
+        height: '100%',
         backgroundColor: '#171924'
     },
     inner: {
@@ -73,86 +92,130 @@ const useStyles = makeStyles(theme => ({
     actions: {
       height: '20%',
       justifyContent: 'flex-end'
+    },
+    headerCell: {
+        /*color: '#8791ad',
+        fontWeight: 'bold',
+        fontSize: '12px',
+        lineHeight: '15px',
+        padding: '14px'*/
     }
-  }));
+  });
 
-const LogTable = props => {
-    const {className, ...rest} = props;
-    const classes = useStyles();
 
-    const [logs] = useState(testData);
-    console.log(moment().valueOf());
+class LogTable extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            logData: [],
+            page: 0,
+            rowsPerPage: 10,
+        }
 
-    return (
-        <Card
+    }
+    /*
+    componentWillReceiveProps(nextProps) {
+        this.setState({ logData: [],})
+        const logData = nextProps.logData;
+        function createData(sensor_id, date_created, risk_value, status) {
+            return {sensor_id, date_created, risk_value, status};
+        }
+        for (let i in logData) {
+            const log = logData[i];
+            this.state.logData.push(createData(log.sensor_id, log.date_created, log.risk_value, log.status))
+        }
+        console.log(this.state.logData)
+        console.log(this.state.logData.slice(this.state.page * this.state.rowsPerPage , this.state.page * this.state.rowsPerPage + this.state.rowsPerPage))
+        
+    }*/
+    render() {
+        const handleChangePage = (event, newPage) => {         
+            this.setState({page: newPage,});
+            console.log(this.state.page);
+        }
+        const handleChangeRowsPerPage = event => {
+            this.setState({rowsPerPage: +event.target.value,});
+            this.state.page = 0;
+        }
+        const {className, classes, ...rest} = this.props;
+        const columns = [
+            {id: 'sensor_id', label: '센서 이름', minWidth: 100},
+            {id: 'risk_value', label: '로그 값', minWidth: 170},
+            {id: 'date_created', label: '로그 시간', minWidth: 170},
+            {id: 'status', label: '상태', minWidth: 100},
+        ]
+        return (
+            <Card
             {...rest}
             className={clsx(classes.root, className)}
-        >
-            <CardHeader
-                title = "로그 메세지"
             >
-            </CardHeader>
-            <Divider />
-            <CardContent className = {classes.content}>
-                <PerfectScrollbar>
-                    <div className = {classes.inner}>
-                        <Table stickyHeader = {classes.stickyHeader}>
-                            <TableHead className = {classes.tableHeader}>
-                                <TableRow>
-                                    <TableCell>Sensor ID</TableCell>
-                                    <TableCell>Date</TableCell>                         
-                                    <TableCell>Time</TableCell>
-                                    <TableCell>Sensor Information</TableCell>
-                                    <TableCell>Status</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {logs.map(log => (
-                                    <TableRow
-                                        hover
-                                        key={log.id}
-                                    >
-                                        <TableCell>{log.id}</TableCell>
-                                        <TableCell>
-                                            {moment(log.createdAt).format('YYYY-MM-DD')}
-                                        </TableCell>
-                                        <TableCell>
-                                            {moment(log.createdAt).format('h:mm:ss a')}
-                                        </TableCell>
-                                        <TableCell>{log.info}</TableCell>
-                                        
-                                        <TableCell>
-                                        <div className={classes.statusContainer}>
-                                            <StatusBullet
-                                            className={classes.status}
-                                            color={statusColors[log.status]}
-                                            size="sm"
-                                            />
-                                            {log.status}
-                                        </div>
-                                        </TableCell>
+            <CardHeader
+                title={<div><img src={marker} width = "6px" height ="10px"/> 로그 메세지</div> }          
+            />
+            <Divider />            
+            <CardContent className = {classes.content}>                
+                <TableContainer className ={classes.container}>  
+                    <Table stickyHeader className = {classes.table}>
+                        <TableHead>
+                            <TableRow>
+                                {columns.map(column => (
+                                    <TableCell key = {column.id} align={column.align} style ={{minWidth: column.minWidth, height: '45px'}} className = {classes.headerCell}>
+                                        {column.label}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {this.props.logData.slice(this.state.page * this.state.rowsPerPage , this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map(row => {
+                                return(
+                                    <TableRow hover tabIndex = {-1}>
+                                        {columns.map(column => {
+                                            const value = row[column.id];
+                                            return (
+                                                <TableCell key={column.id} align={column.align}>
+                                                    {column.id==="status"? <div className={classes.statusContainer}>
+                                                        <StatusBullet className={classes.status} color={statusColors[value]} size ="sm"/>
+                                                        {value == '0' ? '정상': value == '1' ? '관심': value == '2' ? '주의' : value == '3' ? '경계': '위험'}
+                                                    </div>:value}
+                                                </TableCell>
+                                            )
+                                        })} 
                                     </TableRow>
-                                    ))}
-                            </TableBody>
-                        </Table>
-                    </div> 
-                </PerfectScrollbar>
-            </CardContent>
-            <Divider/>
-            <CardActions className = {classes.actions}>
-                <Button
-                    color="Primary"
-                    size="small"
-                    variant="text"
-                >
-                    View All <ArrowRightIcon />
-                </Button>
-            </CardActions>
-            
+
+                                )
+                            })
+                            }
+                        </TableBody>
+                    </Table>
+                    
+                </TableContainer>
+                
+                <TablePagination
+                 rowsPerPageOptions={[10, 25, 50]}
+                 component = "div"
+                 count={this.props.logData.length}
+                 page={this.state.page}
+                 rowsPerPage={this.state.rowsPerPage}
+                 onChangePage = {handleChangePage}
+                 onChangeRowsPerPage ={handleChangeRowsPerPage}
+                 className ={classes.pagination}>
+                </TablePagination>
+                
+                
+            </CardContent>            
         </Card>
 
-    );
 
+        )
+    }
 }
 
-export default LogTable;
+const mapStateToProps = (state) => {
+    return {
+      logData: state.sensor.logData,
+    };
+}
+
+  
+
+export default connect(mapStateToProps)(withStyles(useStyles)(LogTable));

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/styles';
 import './GasSensorGraph.css';
 import {connect} from 'react-redux';
+import marker from 'image/marker.png';
 
 import {
     Card,
@@ -18,18 +19,21 @@ require('highcharts/highcharts-more')(Highcharts);
 
 const useStyles = theme => ({
     root: {
-      height: '32vh'
+      height: '29.52vh'
     },
     DataContainer: {
-      height: '26vh',
+      height: '24vh',
       textAlign: 'center'
     },
     actions: {
       justifyContent: 'flex-end'
     },
     chartContainer: {
-        height:'100px'
+        height:'100%'
     },
+    cardContent : {
+      height: '100%'
+    }
 });
 
 
@@ -37,10 +41,11 @@ class GasSensorGraph extends Component {
     constructor(props) {
         super(props);
 
-        this.setState({lastUpdate:"", sensorId:""});
+        this.setState({lastUpdate:"", isRendered: false});
         this.chartComponent = React.createRef();
 
         this.state = {
+            sensorId: '',
             config: {
                 chart: {                    
                     type: 'spline',
@@ -61,10 +66,10 @@ class GasSensorGraph extends Component {
                     }
                 },
                 yAxis: {
-                    max: 100,
+                    max: 3000,
                     min: 0,
                     title: {
-                        text: 'sensor data (%)',
+                        text: 'sensor data',
                         style: {
                           color:'#FFFFFF'
                         }
@@ -81,7 +86,7 @@ class GasSensorGraph extends Component {
                     }
                 },
                 tooltip: {
-                    headerFormat: '<b> {series.name}: {point.y}%</b><br/>',
+                    headerFormat: '<b> {series.name}: {point.y}</b><br/>',
                     pointFormat: '날짜: {point.name}'
                 },
                 exporting: {
@@ -103,26 +108,40 @@ class GasSensorGraph extends Component {
 
     }
     componentDidMount() {   
+      this.setState({isRendered: true,});
     }
     componentWillReceiveProps(nextProps) {        
-        let data = nextProps.sensorData.data;
-        console.log(this.sensorId);
-        console.log(nextProps.clickedSensorId);
-        if (this.sensorId !== nextProps.clickedSensorId) {
+        if (this.state.isRendered){
           const chart = this.chartComponent.current.chart;
-          this.setState({sensorId: nextProps.clickedSensorId});          
-        }        
-        if(this.state.lastUpdate !== data.date_created) {
-            const chart = this.chartComponent.current.chart;        
+          const sensorId = nextProps.clickedSensorId;
+          const sensorData = nextProps.sensorData;
+          let values = null;          
+          for(const i in sensorData) {
+            values = sensorData[i];
+            if(sensorId===values.sensor_id) {
+              break;
+            }
+          }
+
+          if(sensorId != this.state.sensorId) {           
+
+            console.log(chart)
+
+            this.setState({sensorId: sensorId});
+          }
+
+          if(this.state.lastUpdate !== values.date_created) {
             let series = chart.series[0]
+            console.log(chart.series)
             let shift = series.data.length > 10;
-            series.addPoint([data.date_created ,Number(data.value)], true, shift);        
-            this.setState({lastUpdate:data.date_created});
+            series.addPoint([values.date_created ,Number(values.value)], true, shift);        
+            this.setState({lastUpdate:values.date_created});
+          }         
+          
         }
 
     }
     componentWillUnmount(){
-        clearTimeout(this.state.timeout);
     }
   
     render() {
@@ -132,8 +151,8 @@ class GasSensorGraph extends Component {
           {...rest}
           className={clsx(classes.root, className)}
         >
-          <CardHeader        
-            title="센서 시계열 데이터"
+          <CardHeader
+                title={<div><img src={marker} width = "6px" height ="10px"/> 센서 시계열 데이터</div> }          
           />
           <Divider />
           <CardContent className={clsx(classes.cardContent, className)}>
@@ -152,11 +171,10 @@ class GasSensorGraph extends Component {
 };
     
   
-const mapStateToProps = (state) => {
-    console.log(state);    
+const mapStateToProps = (state) => {   
     return {
-        sensorData: state.sensorData,
-        clickedSensorId: state.clickedFeature.feature.values_.sensor_id
+      clickedSensorId: state.session.clickedSensorId,
+      sensorData: state.sensor.sensorData
     };
   }
 

@@ -6,15 +6,15 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
 import './SensorData.css';
-import { receiveTotalSensorData } from '../../../../../store/actions'
-import axios from 'axios';
 
 import {
   Card,
   CardHeader,
   CardContent,
   Divider,
+  Avatar,
 } from '@material-ui/core';
+import marker from 'image/marker.png'
 
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/bullet')(Highcharts);
@@ -22,7 +22,7 @@ require('highcharts/modules/bullet')(Highcharts);
 
 const useStyles = theme => ({
   root: {
-    height: '32vh'
+    height: '45.55vh'
   },
   DataContainer: {
     height: '24vh',
@@ -33,7 +33,7 @@ const useStyles = theme => ({
     justifyContent: 'flex-end'
   },
   chartContainer: {
-    height: '100px'
+    height: '10vh'
   },
 
   cardContent: {
@@ -51,48 +51,108 @@ class SensorData extends Component {
           inverted: true,
           type: 'bullet',
           marginTop: 0,
-          animation: true
+          animation: true,
+          plotBorderColor:'#606053'
         },
         plotOptions: {
           series: {
-            animation: true
+            animation: true,
+            dataLabels: {
+              color:'#F0F0F3'
+            },
+            style :{
+              fontSize:'13px'
+            },
+            marker: {
+              lineColor:'#000'
+            },
+            color: '#000',
+            borderWidth: 0,
+            pointPadding: 0.2,
+            targetOptions: {
+              width:'0%'
+            }
+          },
+          boxplot: {
+            fillColor: '#505053'
+          },
+          candlestick:{
+            lineColor: 'white'
           }
+
         },
         title: {
-          text: null
+          text: null,
+          style:{
+            color:'#b8c4e6',
+          }
+        },
+        subtitle: {
+          text: null,
+          style:{
+            color:'#b8c4e6',
+          }
         },
         legend: {
-          enabled: false
+          enabled: false,
+          itemStyle :{
+            color:'#b8c4e6'
+          }
         },
         xAxis: {
           categories: [],
           labels: {
             style: {
-                color:'#FFFFFF'
+                color:'#b8c4e6',
+                fill:'#b8c4e6'
+            },
+            text: {
+              style: {
+                color:'#b8c4e6',
+                fill:'#b8c4e6'
+              }
             }
-        }
+          },
+          lineColor:'#707073',
+          minorGridLineColor:'#505053',
+          title: {
+            style:{
+              color:'#b8c4e6'
+            }
+          }
         },
         yAxis: {
-          max: 100,
+          max: 5000,
           plotBands: [{
             from: 0,
-            to: 40,
-            color: '#bbb'
-          },
-          {
-            from: 40,
-            to: 80,
-            color: '#999'
-          },
-          {
-            from: 80,
             to: 100,
-            color: '#666'
+            color: '#b2ff55'
+          },
+          {
+            from: 100,
+            to: 1000,
+            color: '#fff771'
+          },
+          {
+            from: 1000,
+            to: 2000,
+            color: '#ff803a'
+          },
+          {
+            from: 2000,
+            to: 3000,
+            color: '#f8342d'
+          },
+          {
+            from: 3000,
+            to: 5000,
+            color: '#55237d'
           }],
           title: null,
           labels: {
             style: {
-                color:'#FFFFFF'
+                color:'#b8c4e6',
+                fontFamily:'NanumGothic'
             }
           }          
         },
@@ -105,7 +165,11 @@ class SensorData extends Component {
 
         }],
         tooltip: {
-          pointFormat: '<b>{point.y}</b> %'
+          backgroundColor: 'rgba(0,0,0,0.85)',
+          style: {
+            color: '#F0F0F0'
+          },
+          pointFormat: '<b>{point.y}</b>'
         },
         credits: {
           enabled: false
@@ -114,23 +178,13 @@ class SensorData extends Component {
     }
 
   }
-  componentDidMount() {
-    this.setState({});
-    let getTotalSensorData = () => {
-      axios.get('http://141.223.108.164:8080/sensor_total_value').then(response => {
-        this.props.onReceiveTotalSensorData(response.data);
-        this.setState({ timeout: setTimeout(getTotalSensorData, 1000 * 2) });
-      });
-    }
-    getTotalSensorData();
-  }
-  componentWillUnmount() {
-    clearTimeout(this.state.timeout);
+  componentWillReceiveProps(nextProps){
+    console.log(nextProps.sensorData)
   }
 
   render() {
     const { className, classes, ...rest } = this.props;
-    const sensors = this.props.totalSensorData.value;
+    const sensors = this.props.sensorData;
     const configs = [];
 
     if (sensors) sensors.sort((a, b) => {
@@ -141,7 +195,7 @@ class SensorData extends Component {
       const config = Object.assign({}, this.state.config);
       config.xAxis = {};
       config.xAxis.categories = ['<span class="hc-cat-title">' + sensors[sensor].sensor_id + '</span><br/>'];
-      config.series = [{ data: [{ y: Number(sensors[sensor].value), target: 0 }] , color: '#2E6FFD'}];
+      config.series = [{ data: [{ y: Number(sensors[sensor].value), target: 100 }]}];
       configs.push(config);
     }
 
@@ -152,8 +206,8 @@ class SensorData extends Component {
         className={clsx(classes.root, className)}
       >
         <CardHeader
-          title="전체 센서 데이터"
-        />
+          title={<div><img src={marker} width = "6px" height ="10px"/>  전체 센서 데이터</div> }          
+          />
         <Divider />
         <CardContent className={clsx(classes.cardContent, className)}>
           <div className={classes.DataContainer}>
@@ -181,15 +235,13 @@ SensorData.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    totalSensorData: state.totalSensorData,
+    sensorData: state.sensor.sensorData,
+    sensorInfos: state.sensor.sensorInfos,
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onReceiveTotalSensorData: (value) => {
-      dispatch(receiveTotalSensorData(value))
-    }
   };
 }
 

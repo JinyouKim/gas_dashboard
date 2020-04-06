@@ -2,7 +2,9 @@
     height: 33%;
 }
 .hc-cat-title {
+    font-family:'NanumGothicB';
     font-size: 15px;
     font-weight: bold;
-    color: #ffffff
+    color: red;
+    fill: #b8c4e6;
 }

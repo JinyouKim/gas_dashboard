@@ -1,4 +1,4 @@
-import {RECV_CLICKEVT, RECV_BACKWARDEVT} from "../actions/index"
+import {RECV_CLICKEVT, RECV_BACKWARDEVT, RECV_ALLSENSORINFO} from "../actions/index"
 
 export default function (state =[], action) {
     switch (action.type) {
@@ -12,6 +12,12 @@ export default function (state =[], action) {
                 ...state,
                 value: action.value
             };
+        
+        case RECV_ALLSENSORINFO:
+            return {
+                ...state,
+                sensorInfos: action.sensorInfos                
+            }
         
         default:
             return state;

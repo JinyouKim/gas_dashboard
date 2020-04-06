@@ -1,31 +1,33 @@
 import palette from './palette'
-import { isPlaceholderType } from '@babel/types';
+import { isPlaceholderType, tsStringKeyword } from '@babel/types';
 
 export default {
-    h1: {
-        color: palette.text.primary,
-        fontWeight: 500,
-        fontSize: '35px',
-        letterSpacing: '-0.24px',
-        lineHeight: '40px'
+    fontFamily: ['NanumGothic', 'NanumGothicB'],
+    h1_title: {
+        fontFamily: 'NanumGothicB',
+        color: palette.text.widgetHeader,
+        //fontWeight: 'bold',
+        fontSize: '15px',
+        letterSpacing: '0.5px',
+        lineHeight: '12px'
     },
-    h2: {
-        color: palette.text.primary,
-        fontWeight: 500,
-        fontSize: '29px',
-        letterSpacing: '-0.24px',
-        lineHeight: '32px'
+    h1_sub1: {
+        color: 'NanumGothicB',
+        fontWeight: 'bold',
+        fontSize: '15px',
+        letterSpacing: '0.5px',
+        lineHeight: '12px'
     },
     h3: {
         color: palette.text.primary,
-        fontWeight: 500,
+        fontWeight: 'bold',
         fontSize: '24px',
         letterSpacing: '-0.06px',
         lineHeight: '28px'
     },
     h4: {
         color: palette.text.primary,
-        fontWeight: 500,
+        fontWeight: 'bold',
         fontSize: '20px',
         letterSpacing: '-0.06px',
         lineHeight: '24px'
@@ -59,13 +61,15 @@ export default {
     },
     body1: {
         color: palette.text.primary,
-        fontSize: '14px',
+        fontSize: '12px',
+        fontWeight: 'regular',
         letterSpacing: '-0.05px',
         lineHeight: '21px'
     },
     body2: {
         color: palette.text.secondary,
-        fontSize: '12px',
+        fontSize: '10px',
+        fontWeight: 'regular',
         letterSpacing: '-0.04px',
         lineHeight: '18px'
     },
@@ -86,5 +90,16 @@ export default {
         letterSpacing: '0.35px',
         lineHeight: '13px',
         textTransform: 'uppercase'
+    },
+    tableHeader: {
+        color: palette.text.tableHeader,
+        fontFamily: 'NanumGothicB',
+        fontSize: '12px',
+        lineHeight: '15px'
+    },
+    tableCell: {
+        color: palette.text.tableCell,
+        fontSize: '12px',
+        lineHeight: '15px'        
     }
 };

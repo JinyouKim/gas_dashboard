@@ -1,16 +1,12 @@
 import {combineReducers} from 'redux';
-import SensorDataReducer from './SensorDataReducer.js'
-import PipeDataReducer from './PipeDataReducer.js'
-import SensorInfoReducer from './SensorInfoReducer.js'
-import TotalSensorDataReducer from './TotalSensorDataReducer.js'
-import VworldMapReducer from './VworldMapReducer';
+import SessionReducer from './SessionReducer.js'
+import SensorReducer from './SensorReducer.js'
+import PipeReducer from './PipeReducer.js'
 
 const rootReducer = combineReducers({
-    clickedFeature: VworldMapReducer,
-    sensorData: SensorDataReducer,
-    pipeData: PipeDataReducer,
-    sensorInfo: SensorInfoReducer,
-    totalSensorData: TotalSensorDataReducer
+    session: SessionReducer,
+    sensor: SensorReducer,
+    pipe: PipeReducer,    
 });
 
 export default rootReducer;

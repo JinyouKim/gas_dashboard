@@ -46,12 +46,19 @@ export default {
     text: {
         primary: colors.blueGrey[100],
         secondary: "#2E6FFD",
-        link: colors.blue[600]
+        link: colors.blue[600],
+        widgetHeader: "#fafbff",
+        tableHeader: '#8791ad',
+        tableCell: '#cad3e6'
+        
     },
     background: {
         default: '#F4F6F8',
-        paper: '#2A2F3D'
+        paper: '#2A2F3D',
+        widgetHeader: '#292f3d',
+        tableHeader: '#171924',
+        tableCell: '#212530'        
     },
     icon: colors.blueGrey[600],
-    divider: '#171924'
+    divider: '#464c5c'
 };

@@ -12,13 +12,13 @@ import {
 
 const useStyles = theme => ({
   root: {
-    height: '65vh',
+    height: '100%',
     display: 'flex',
     flexDirection: 'column'
 
   },
   mapContainer: {
-    height: '100vh',
+    height: '54.19vh',
     position: 'relative'
   },
   actions: {

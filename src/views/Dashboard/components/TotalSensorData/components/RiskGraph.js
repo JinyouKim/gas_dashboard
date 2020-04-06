@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-
+import { connect } from 'react-redux';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/styles';
@@ -14,15 +14,15 @@ import {
     CardContent,  
     Divider,
   } from '@material-ui/core';
-
+import marker from 'image/marker.png'
 require('highcharts/highcharts-more')(Highcharts);
 
 const useStyles = theme => ({
     root: {
-      height: '32vh'
+        height: '45.56vh'
     },
     DataContainer: {
-      height: '26vh',
+      height: '40vh',
       textAlign: 'center'
     },
     actions: {
@@ -103,18 +103,17 @@ class RiskGraph extends Component {
         }
 
     }
+
+    componentWillReceiveProps(nextProps){
+        const chart = this.chartComponent.current.chart;
+        let series = chart.series[0]
+        let shift = series.data.length > 10;
+        let districtDanger = nextProps.districtDanger[0];
+        series.addPoint([districtDanger.date_created ,Number(districtDanger.district_risk)], true, shift);
+
+    }
     componentDidMount() {
-      this.setState({timeout: null});
-      const chart = this.chartComponent.current.chart;
-      let getRiskInfo = () => {
-          axios.get('http://141.223.108.164:8080/risk_info').then(response =>{
-              let series = chart.series[0]
-              let shift = series.data.length > 10;
-              series.addPoint([response.data[0].date_created ,Number(response.data[0].value)], true, shift);
-              this.setState({timeout:setTimeout(getRiskInfo, 1000*5)});
-          });
-      }
-      getRiskInfo();
+        console.log(this.props);
     }
     componentWillUnmount(){
         clearTimeout(this.state.timeout);
@@ -127,8 +126,8 @@ class RiskGraph extends Component {
           {...rest}
           className={clsx(classes.root, className)}
         >
-          <CardHeader        
-            title="센서 분석 정보"
+          <CardHeader
+          title={<div><img src={marker} width = "6px" height ="10px"/> 지역 가스 위험도</div> }          
           />
           <Divider />
           <CardContent className={clsx(classes.cardContent, className)}>
@@ -147,6 +146,10 @@ RiskGraph.propTypes = {
     className: PropTypes.string
 };
     
-  
-
-export default withStyles(useStyles)(RiskGraph);
+const mapStateToProps = (state) => {
+    return {
+      districtDanger: state.sensor.districtDanger,
+    };
+  }
+ 
+export default connect(mapStateToProps)(withStyles(useStyles)(RiskGraph));

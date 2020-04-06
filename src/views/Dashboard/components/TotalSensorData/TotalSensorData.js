@@ -22,13 +22,14 @@ const TotalSensorData = () => {
 
     return (
         <div className ={classes.root}>
-            <Grid container spacing = {2} direction="row">
+            <Grid container spacing = {2} direction="column">
                 <Grid item xs={12}>
-                    <SensorData/>
+                    <SensorData/>                    
                 </Grid>
-                <Grid item xs = {12}>                    
-                    <RiskGraph/>
+                <Grid item xs={12}>
+                    <RiskGraph/>                    
                 </Grid>
+                
             </Grid>
         </div>
     )

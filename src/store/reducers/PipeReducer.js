@@ -1,12 +1,11 @@
 import {RECV_PIPEDATA} from "../actions/index"
 
-export default function (state =[], action) {
+export default function (state ={pipeData: []}, action) {
     switch (action.type) {
         case RECV_PIPEDATA:
-            console.log("234");
             return {
                 ...state,
-                value: action.value
+                pipeData: action.pipeData
             };
         default:
             return state;

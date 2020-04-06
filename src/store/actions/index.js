@@ -1,25 +1,39 @@
 export const RECV_SENSORDATA = "RECV_SENSORDATA";
 export const RECV_PIPEDATA = "RECV_PIPEDATA";
 export const RECV_SENSORINFO = "RECV_SENSORINFO";
-export const RECV_CLICKEVT = "RECV_CLICKEVT";
-export const RECV_TOTALSENSORDATA = "RECV_TOTALSENSORDATA";
-export const RECV_BACKWARDEVT = "RECV_BACKWARDEVENT";
+export const CLICK_MAP_OR_BACKWARD = "CLICK_MAP_OR_BACKWARD";
+export const RECV_ALLSENSORDATA = "RECV_ALLSENSORDATA";
+export const CLICK_SENSORICON = "CLICK_SENSORICON";
+export const RECV_ALLSENSORINFO = "RECV_ALLSENSORINFO";
+export const RECV_LOGDATA = "RECV_LOGDATA";
+export const RECV_DISTRICTDANGER = "RECV_DISTRICTDANGER";
+export const RECV_TOTALSENSORSTATUS = "RECV_TOTALSENSORSTATUS";
 
 
-export function receiveSensorData(value) {
+// 센서 아이콘 클릭
+export function clickSensorIcon(sensorId) {
     return {
-        type: RECV_SENSORDATA,
-        value: value
+        type: CLICK_SENSORICON,
+        clickedSensorId: sensorId
     };
 }
 
-export function receivePipeData(value) {
+// 맵 또는 뒤로가기 버튼 클릭
+export function clickMapOrBackward() {
+    return {
+        type: CLICK_MAP_OR_BACKWARD
+    };
+}
+
+// 파이프 정보 수신
+export function receivePipeData(pipeData) {
     return {
         type: RECV_PIPEDATA,
-        value: value
+        pipeData: pipeData
     };
 }
 
+// 센서 정보 수신 액션
 export function receiveSensorInfo(value) {
     return {
         type: RECV_SENSORINFO,
@@ -27,22 +41,42 @@ export function receiveSensorInfo(value) {
     }
 }
 
-export function receiveTotalSensorData(value) {
+// 전체 센서 데이터 수신
+export function receiveAllSensorData(sensorData) {
     return {
-        type: RECV_TOTALSENSORDATA,
-        value: value
+        type: RECV_ALLSENSORDATA,
+        sensorData: sensorData
     }
 }
 
-export function receiveClickEvent(value) {
+// 로그 데이터 수신
+export function receiveLogData(logData) {
     return {
-        type: RECV_CLICKEVT,
-        value: value
+        type: RECV_LOGDATA,
+        logData: logData
     }
 }
-export function receiveBackwardEvent() {
+// 지역 위험 정보 수신
+export function receiveDistrictDanger(districtDanger) {    
     return {
-        type: RECV_BACKWARDEVT,
+        type: RECV_DISTRICTDANGER,
+        districtDanger: districtDanger
+    }
+}
+
+// 전체 센서 정보 수신
+export function receiveAllSensorInfo(sensorInfos) {
+    return {
+        type: RECV_ALLSENSORINFO,
+        sensorInfos: sensorInfos
+    }
+}
+
+// 전체 센서 상태 수신
+export function receiveTotalSensorStatus(totalSensorStatus) {
+    return {
+        type: RECV_TOTALSENSORSTATUS,
+        totalSensorStatus: totalSensorStatus
     }
 }
 
