@@ -7,33 +7,32 @@ export default {
         fontFamily: 'NanumGothicB',
         color: palette.text.widgetHeader,
         //fontWeight: 'bold',
-        fontSize: '15px',
+        fontSize: '20px',
         letterSpacing: '0.5px',
-        lineHeight: '12px'
+        lineHeight: '20px'
     },
     h1_sub1: {
-        color: 'NanumGothicB',
+        fontFamily: 'NanumGothicB',
         fontWeight: 'bold',
         fontSize: '15px',
         letterSpacing: '0.5px',
         lineHeight: '12px'
     },
+    // selection 제목 
     h3: {
-        color: palette.text.primary,
-        fontWeight: 'bold',
-        fontSize: '24px',
-        letterSpacing: '-0.06px',
-        lineHeight: '28px'
+        fontFamily: 'NanumGothicB',
+        color: "#f5f8fa",
+        fontSize: '16px',
     },
     h4: {
-        color: palette.text.primary,
+        color: "f5f8fa",
         fontWeight: 'bold',
         fontSize: '20px',
         letterSpacing: '-0.06px',
         lineHeight: '24px'
     },
     h5: {
-        color: palette.text.primary,
+        color: "white",
         fontWeight: 500,
         fontSize: '16px',
         letterSpacing: '-0.05px',
@@ -61,7 +60,8 @@ export default {
     },
     body1: {
         color: palette.text.primary,
-        fontSize: '12px',
+        fontFamily: 'NanumGothic',
+        fontSize: '16px',
         fontWeight: 'regular',
         letterSpacing: '-0.05px',
         lineHeight: '21px'
@@ -101,5 +101,14 @@ export default {
         color: palette.text.tableCell,
         fontSize: '12px',
         lineHeight: '15px'        
+    },
+    buttonText: {
+        fontFamily: 'NanumGothicB',
+        fontSize: '14px',
+        letterSpacing: '0.5px',
+        color: '#f5f8fa'
+    },
+    selectionTitle: {
+
     }
 };

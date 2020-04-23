@@ -1,21 +1,23 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/styles';
-import Grid from '@material-ui/core/Grid';
+import {Grid,Divider,Paper} from '@material-ui/core';
 import {connect} from 'react-redux';
 import clsx from 'clsx';
 import axios from 'axios';
-import {receivePipeData, receiveAllSensorInfo, receiveAllSensorData,receiveLogData, receiveDistrictDanger, receiveTotalSensorStatus} from '../../store/actions/index'
+import {receivePipeData, receiveAllSensorInfo, receiveAllSensorData,receiveLogData, receiveDistrictDanger, receiveTotalSensorStatus, receiveAllFacilityInfo} from '../../store/actions/index'
 
 
-import {
-    GasMap,
+import {   
     LogTable,
     ContactInformation,
-    TotalSensorData,
-    SensorImage,
     GasSensorGauge,
     GasSensorGraph,
-    SensorInfoTable
+    SensorInfoTable,
+    GasMap,   
+    TotalSafetyStatus,
+    DashboardAppBar,
+    SensorSearchBar,
+    GasRiskStatus,
 } from './components'
 
 const useStyles = theme => ({
@@ -38,11 +40,12 @@ const useStyles = theme => ({
     },
     root: {
         height: "100%",
-        paddingTop: '33px',
-        paddingBottom: '33px',
-        paddingLeft: '40px',
-        paddingRight: '40px',
-    }
+        paddingTop: '1vh',
+        paddingBottom: '1vh',
+        paddingLeft: '1vw',
+        paddingRight: '1vw',
+    },
+    offset: theme.mixins.toolbar
 });
 
 class Dashboard extends Component {
@@ -57,6 +60,12 @@ class Dashboard extends Component {
                 this.props.onReceivePipeData(response.data);
             });
         }
+        let getAllFacilityInfo = () => {
+            axios.get('http://141.223.108.164:8080/all_facility_info').then(response =>{
+                this.props.onReceiveAllFacilityInfo(response.data);
+            });
+          }
+        
         let getSensorInfo = () => {
             axios.get('http://141.223.108.164:8080/all_sensor_info').then(response =>{
                 this.props.onReceiveAllSensorInfo(response.data);            
@@ -69,8 +78,9 @@ class Dashboard extends Component {
               this.setState({ logDataTimeout: setTimeout(getLogData, 1000 * 60) });
             });
         }       
-       
+        
         getPipeData();
+        getAllFacilityInfo();
         getSensorInfo();  
         getLogData();
         
@@ -109,28 +119,58 @@ class Dashboard extends Component {
             this.state.isReceivingSensorData = true;           
         }
 
-        if (nextProps.pageState == 0) {
-            this.setState({dashboard:
-                <Grid container spacing = {2} direction="row">
-                    <Grid item xs={9}> 
-                        <Grid container spacing = {2} direction="column">
-                            <Grid item xs = {12}>
-                                <GasMap/>                                                            
-                            </Grid>
-                            <Grid item xs = {12}>
-                                <LogTable/>
+        this.setState({dashboard:
+            <Grid container spacing = {2} direction="row">
+                <Grid item xs = {12}>                      
+                    <DashboardAppBar/>
+                </Grid>
+                <Grid item xs = {12}>
+                    <Grid container spacing = {1} direction="row">
+                        <Grid item xs = {nextProps.pageState === 0 ? 3: 3}>
+                            <Grid container spacing = {1} direction="column">
+                                <Grid item xs = {12}>
+                                    {nextProps.pageState === 0 ? <SensorSearchBar/>:<ContactInformation/>}
+                                </Grid>
+                                <Grid item xs = {12}>
+                                    {nextProps.pageState === 0 ? <TotalSafetyStatus/>:<ContactInformation/>}
+                                </Grid>                                
+                                {nextProps.pageState === 0 ? undefined:<Grid item xs = {12}><SensorInfoTable/></Grid>}                                
                             </Grid>
                         </Grid>
+                        <Grid item xs = {nextProps.pageState === 0 ? 9:6}>
+                            <GasMap/>
+                        </Grid>
+                        {
+                            nextProps.pageState === 0 ? 
+                            undefined:
+                            <Grid item xs = {3}>
+                                <Grid container spacing = {1} direction="row">
+                                    <Grid item xs= {6}>                            
+                                        <GasRiskStatus/>
+                                    </Grid>
+                                    <Grid item xs= {6}>
+                                        <ContactInformation/>
+                                    </Grid>
+                                    <Grid item xs= {12}>
+                                        <GasSensorGraph/>
+                                    </Grid>
+                                    <Grid item xs= {12}> {this.state.mail}
+                                        <LogTable/>
+                                    </Grid>                        
+                                </Grid>
+                            </Grid>
+                        }
                     </Grid>
-                    <Grid item xs = {3}>
-                        <TotalSensorData/>
-                    </Grid>
-                </Grid>
-            })
-        }
+                </Grid>                    
+            </Grid>
+        })
+        /*
         else if(nextProps.pageState == 1) {
             this.setState({dashboard:
             <Grid container spacing = {2} direction="row">
+                <Grid item xs = {12}>                      
+                    <DashboardAppBar/>
+                </Grid>
                 <Grid item xs={8}> 
                     <Grid container spacing = {2} direction="row">
                         <Grid item xs = {12}>
@@ -167,15 +207,13 @@ class Dashboard extends Component {
             </Grid>
             })
         }
-
+        */
 
     }
     render() {
-        const {className, classes, ...rest} = this.props
-        let dashboard = <div></div>
-        
+        const {className, classes, ...rest} = this.props        
 
-        return (
+        return (            
             <div className ={clsx(classes.root, className)}>
                 {this.state.dashboard}
             </div>
@@ -209,6 +247,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         onReceiveTotalSensorStatus: (totalSensorStatus) => {
             dispatch(receiveTotalSensorStatus(totalSensorStatus))
+        },
+        onReceiveAllFacilityInfo: (allFacilityInfo) => {
+            dispatch(receiveAllFacilityInfo(allFacilityInfo))
         }
     };
 }

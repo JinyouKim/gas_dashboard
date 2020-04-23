@@ -111,23 +111,8 @@ class LogTable extends Component {
             page: 0,
             rowsPerPage: 10,
         }
-
     }
-    /*
-    componentWillReceiveProps(nextProps) {
-        this.setState({ logData: [],})
-        const logData = nextProps.logData;
-        function createData(sensor_id, date_created, risk_value, status) {
-            return {sensor_id, date_created, risk_value, status};
-        }
-        for (let i in logData) {
-            const log = logData[i];
-            this.state.logData.push(createData(log.sensor_id, log.date_created, log.risk_value, log.status))
-        }
-        console.log(this.state.logData)
-        console.log(this.state.logData.slice(this.state.page * this.state.rowsPerPage , this.state.page * this.state.rowsPerPage + this.state.rowsPerPage))
-        
-    }*/
+    
     render() {
         const handleChangePage = (event, newPage) => {         
             this.setState({page: newPage,});
@@ -173,10 +158,12 @@ class LogTable extends Component {
                                             const value = row[column.id];
                                             return (
                                                 <TableCell key={column.id} align={column.align}>
-                                                    {column.id==="status"? <div className={classes.statusContainer}>
-                                                        <StatusBullet className={classes.status} color={statusColors[value]} size ="sm"/>
-                                                        {value == '0' ? '정상': value == '1' ? '관심': value == '2' ? '주의' : value == '3' ? '경계': '위험'}
-                                                    </div>:value}
+                                                    {column.id==="status"
+                                                        ? <div className={classes.statusContainer}>
+                                                            <StatusBullet className={classes.status} color={statusColors[value]} size ="sm"/>
+                                                            {value == '0' ? '정상': value == '1' ? '관심': value == '2' ? '주의' : value == '3' ? '경계': '위험'}
+                                                          </div>
+                                                        :value}
                                                 </TableCell>
                                             )
                                         })} 

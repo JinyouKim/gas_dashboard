@@ -8,6 +8,8 @@ export const RECV_ALLSENSORINFO = "RECV_ALLSENSORINFO";
 export const RECV_LOGDATA = "RECV_LOGDATA";
 export const RECV_DISTRICTDANGER = "RECV_DISTRICTDANGER";
 export const RECV_TOTALSENSORSTATUS = "RECV_TOTALSENSORSTATUS";
+export const RECV_ALLFACILITYINFO = "RECV_ALLFACILITYINFO";
+export const CLICK_SEARCHBUTTON = "CLICK_SEARCHBUTTON";
 
 
 // 센서 아이콘 클릭
@@ -79,4 +81,19 @@ export function receiveTotalSensorStatus(totalSensorStatus) {
         totalSensorStatus: totalSensorStatus
     }
 }
+export function receiveAllFacilityInfo(allFacilityInfo) {
+    return {
+        type: RECV_ALLFACILITYINFO,
+        allFacilityInfo: allFacilityInfo
+    }
+}
+
+export function clickSearchButton(selectedSensorId) {
+    return {
+        type:CLICK_SEARCHBUTTON,
+        selectedSensorId: selectedSensorId
+    }    
+}
+
+
 

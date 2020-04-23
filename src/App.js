@@ -6,6 +6,7 @@ import {Router} from 'react-router-dom'
 import Routes from './Routes'
 import './assets/scss/index.scss';
 import 'react-perfect-scrollbar/dist/css/styles.css';
+import DashboardAppBar from './views/Dashboard/components/DashboardAppBar'
 
 
 
@@ -13,7 +14,7 @@ const browserHistory = createBrowserHistory();
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>         
       <Router history = {browserHistory}>
         <Routes />
       </Router>

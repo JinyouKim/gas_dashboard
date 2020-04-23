@@ -1,7 +1,7 @@
 export default {
   root: {    
   "&:last-Child" :{
-      paddingBottom: '16px'
+      paddingBottom: '0px'
     }  
   }
 };

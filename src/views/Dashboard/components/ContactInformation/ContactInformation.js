@@ -1,6 +1,20 @@
 import React, {Component} from 'react';
 import clsx from 'clsx';
-import { Card, CardHeader, CardContent, Divider, Grid, Typography, Avatar } from '@material-ui/core';
+import 
+{ 
+  Card, 
+  CardHeader, 
+  CardContent, 
+  Divider, 
+  Grid, 
+  Typography, 
+  Avatar, 
+  Table,
+  TableHead,
+  TableCell,
+  TableContainer,
+  TableBody,
+  TableRow, } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import PhotoIcon from '@material-ui/icons/Photo';
 import {withStyles} from '@material-ui/core/styles';
@@ -80,21 +94,41 @@ class ContactInformation extends Component {
       <Grid
         container
         justify="space-between"
+        spacing = {2}
       >
-          <Grid item>
-            <img src={"http://141.223.108.164:8080/user_image/"+this.state.id} width="50%" height="auto"/>           
+          <Grid item xs = {4}>
+            <img src={"http://141.223.108.164:8080/user_image/"+this.state.id} width="100%" height="auto"/>           
           </Grid>
-          <Grid item>
-            <Typography
-              className={classes.title}
-              color="textSecondary"
-              gutterBottom
-              variant="h3"
-            >
-              {this.state.name}
+          <Grid item xs = {8}>
+            <Typography className={classes.title} color="textSecondary" gutterBottom variant="h3">
+                      {this.state.name}
             </Typography>
-            <Typography variant="h5">연락처: {this.state.phone}</Typography>
-            <Typography variant="h5">이메일: {this.state.mail}</Typography>
+            <TableContainer className ={classes.container}>  
+              <Table stickyHeader className = {classes.table}>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>
+                      <Typography variant="h5">연락처</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="h5">{this.state.phone}</Typography>
+                    </TableCell>
+                                      
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <Typography variant="h5">이메일</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="h5">{this.state.mail}</Typography>
+                    </TableCell>
+
+                  </TableRow>
+                  
+                </TableBody>
+              </Table>
+            </TableContainer>
+            
           </Grid>          
         </Grid>
       </CardContent>

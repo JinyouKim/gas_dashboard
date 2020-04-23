@@ -1,6 +1,6 @@
-import {CLICK_SENSORICON, CLICK_MAP_OR_BACKWARD} from "../actions/index"
+import {CLICK_SENSORICON, CLICK_MAP_OR_BACKWARD, CLICK_SEARCHBUTTON} from "../actions/index"
 
-export default function (state = {pageState: 0, clickedSensorId: "abc"}, action) {
+export default function (state = {pageState: 0, clickedSensorId: "abc", selectedSensorId: undefined, isClickedSearchButton: false}, action) {
     switch (action.type) {
         case CLICK_SENSORICON:     
             return {
@@ -12,6 +12,12 @@ export default function (state = {pageState: 0, clickedSensorId: "abc"}, action)
             return {
                 ...state,
                 pageState: 0
+            };
+        case CLICK_SEARCHBUTTON:
+            return {
+                ...state,
+                selectedSensorId: action.selectedSensorId,
+                isClickedSearchButton: !state.isClickedSearchButton
             };
         default:
             return state;
